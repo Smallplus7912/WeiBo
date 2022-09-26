@@ -24,7 +24,7 @@ class SessionsController extends Controller
 	    return redirect()->route('users.show',[Auth::user()]);
 	}else{
 	    session()->flash('danger','用户名或密码错误，请重试');
-	    return redirect()->back()->withInput();
+	    return redirect()->back()->withInput($request->except('password'));
 	}
 
     }
