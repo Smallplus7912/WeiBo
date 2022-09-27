@@ -69,13 +69,21 @@ class UsersController extends Controller
             'except' => ['show', 'create', 'store','index']
         ]);
 
-        $this->middleware('guest', [
+            $this->middleware('guest', [
             'only' => ['create']
         ]);
 	}
 
     public function index(){
-        $users=User::all();
+        $users=User::paginate(6);
 	return view('users.index',compact('users'));
+    }
+
+
+    public function destroy(User $user){
+	$this->authorize('destroy',$user);    
+	$user->delete();
+	session()->flash('success','成功删除用户！');
+	return back();
     }
 }
