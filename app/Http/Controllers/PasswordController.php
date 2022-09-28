@@ -17,6 +17,13 @@ class PasswordController extends Controller
         return view('auth.passwords.email');
     }
 
+    public function __construct()
+    {
+        $this->middleware('throttle:3,5', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+    }
+
     public function sendResetLinkEmail(Request $request)
     {
         // 1. 验证邮箱

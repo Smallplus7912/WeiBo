@@ -82,8 +82,12 @@ class UsersController extends Controller
             'except' => ['show', 'create', 'store','index','confirmEmail']
         ]);
 
-            $this->middleware('guest', [
+        $this->middleware('guest', [
             'only' => ['create']
+        ]);
+
+        $this->middleware('throttle:5,10',[
+            'only'=>['store']
         ]);
 	}
 
