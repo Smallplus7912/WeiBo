@@ -46,8 +46,9 @@ class User extends Authenticatable
         return "https://cdn.sep.cc/avatar/$hash?s=$size";
     }
 
-    public function statuses(){
-        return $this->hasMany(status::class);
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
     }
 
 
