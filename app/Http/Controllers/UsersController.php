@@ -14,10 +14,16 @@ class UsersController extends Controller
         return view('users.create');
     }
 
+
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses=$user->statuses()
+                        ->orderBy('created_at','desc')
+                        ->paginate(10);
+        return view('users.show', compact('user','statuses'));
     }
+
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -37,6 +43,7 @@ class UsersController extends Controller
         return redirect('/');
     }
 
+
     protected function sendEmailConfirmationTo($user)
     {
         $view = 'emails.confirm';
@@ -51,11 +58,13 @@ class UsersController extends Controller
         });
     }
 
+
     public function edit(User $user)
     {
         $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
+
 
     public function update(User $user,Request $request)
     {
@@ -77,6 +86,7 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user);
     }
 
+
     public function __construct(){
 	    $this->middleware('auth', [
             'except' => ['show', 'create', 'store','index','confirmEmail']
@@ -90,6 +100,7 @@ class UsersController extends Controller
             'only'=>['store']
         ]);
 	}
+
 
     public function confirmEmail($token)
     {
